@@ -16,6 +16,13 @@ This software is licensed under GPL3 or later.
 
 ## Installation
 
+### PyPI
+
+You can install the package directly using pip.
+```
+$ pip install peodd
+```
+
 ### Getting the source code
 
 Clone the repository
