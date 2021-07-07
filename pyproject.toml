@@ -26,8 +26,14 @@ include = [
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/vchrombie/peodd/issues"
 
+[tool.poetry.scripts]
+peodd = 'peodd.peodd:main'
+
 [tool.poetry.dependencies]
 python = "^3.6"
+tomlkit = "^0.5.8"
+click = "^7.0"
+release-tools = "^0.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

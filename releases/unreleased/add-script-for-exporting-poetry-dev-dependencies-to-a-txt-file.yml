@@ -1,0 +1,18 @@
+---
+title: Add script for exporting poetry dev-dependencies to a txt file
+category: added
+author: Venu Vardhan Reddy Tekula <venuvardhanreddytekula8@gmail.com>
+issue: null
+notes: >
+    Poetry has an option to export the dependencies to a txt file.
+    If you need the dev dependencies too, then you need add `dev`
+    flag with the export command.
+
+    But, there is no support to export only the dev-dependencies.
+    This script is a workaround & quick-solution to this problem. 
+    It can export the dev-dependencies to a requirements-dev.txt file.
+
+    Usage:
+    ```
+    $ peodd -o requirements-dev.txt
+    ```
