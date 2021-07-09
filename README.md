@@ -6,6 +6,8 @@ Script to export the pyproject.toml dev-dependencies to a txt file.
 
 This software is licensed under GPL3 or later.
 
+**Note:** Right now, this tool supports only some poetry formats of the dependencies (specifically `foo = '^n.n.n'`, `foo = '>=n.n.n'`, `foo = 'n.n.n'`). I would be interested to add support for more formats, please [open an issue](https://github.com/vchrombie/peodd/issues/new) incase if you need any other. 
+
 ## Requirements
 
  * Python >= 3.6
