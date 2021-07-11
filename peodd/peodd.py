@@ -21,9 +21,7 @@
 #
 
 
-"""
-Script to export the pyproject.toml dev-dependencies to a txt file.
-"""
+"""Script to export the pyproject.toml dev-dependencies to a txt file."""
 
 import os
 import re
@@ -33,8 +31,9 @@ import tomlkit.toml_file
 
 from release_tools.project import Project
 from release_tools.semverup import find_pyproject_file
+from release_tools.repo import RepositoryError
 
-VERSION_NUMBER_REGEX = "\d+(?:\.\d+)+"
+VERSION_NUMBER_REGEX = r"\d+(?:\.\d+)+"
 
 
 @click.command()
@@ -43,10 +42,7 @@ VERSION_NUMBER_REGEX = "\d+(?:\.\d+)+"
               show_default=True,
               help="Output file for the dependencies")
 def main(output):
-    """
-    Script to export the pyproject.toml dev-dependencies
-    to a txt file.
-    """
+    """Script to export the pyproject.toml dev-dependencies to a txt file."""
     try:
         project = Project(os.getcwd())
     except RepositoryError as e:
