@@ -27,7 +27,7 @@ import os
 import re
 
 import click
-import tomlkit.toml_file
+import tomli
 
 from release_tools.project import Project
 from release_tools.semverup import find_pyproject_file
@@ -51,10 +51,14 @@ def main(output):
     # Get the pyproject file
     pyproject_file = find_pyproject_file(project)
 
-    fd = tomlkit.toml_file.TOMLFile(pyproject_file)
-    metadata = fd.read()
-    poetry_dev_dependencies = \
-        metadata["tool"]["poetry"]["dev-dependencies"]
+    with open(pyproject_file, encoding="utf-8") as f:
+        try:
+            toml_dict = tomli.load(f)
+        except tomli.TOMLDecodeError:
+            msg = "{} file is not valid".format(pyproject_file)
+            raise click.ClickException(msg)
+
+    poetry_dev_dependencies = toml_dict["tool"]["poetry"]["dev-dependencies"]
 
     click.echo("Collected the dev-dependencies")
 

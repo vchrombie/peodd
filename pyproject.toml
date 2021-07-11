@@ -31,7 +31,7 @@ peodd = 'peodd.peodd:main'
 
 [tool.poetry.dependencies]
 python = "^3.6"
-tomlkit = "^0.5.8"
+tomli = "^1.0.4"
 click = "^7.0"
 release-tools = "^0.3.0"
 
