@@ -1,9 +1,0 @@
----
-title: Use tomli instead of tomlkit
-category: performance
-author: Venu Vardhan Reddy Tekula <venu@chaoss.community>
-issue: null
-notes: >
-    tomli is 14x as fast as tomlkit. This change replaces
-    existing tomlkit code with the tomli methods. It also
-    adds a condition to validate the pyproject.toml file.

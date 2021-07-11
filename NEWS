@@ -1,5 +1,15 @@
 # Releases
 
+## peodd 0.2.0 - (2021-07-11)
+
+**Performance improvements:**
+
+ * Use tomli instead of tomlkit\
+   tomli is 14x as fast as tomlkit. This change replaces existing tomlkit
+   code with the tomli methods. It also adds a condition to validate the
+   pyproject.toml file.
+
+
 ## peodd 0.1.0 - (2021-07-07)
 
 **New features:**
