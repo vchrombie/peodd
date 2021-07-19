@@ -38,6 +38,7 @@ release-tools = "^0.3.0"
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 flake8 = "^3.9.2"
+coverage = "^5.5"
 
 [build-system]
 requires = [

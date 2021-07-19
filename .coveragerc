@@ -1,0 +1,4 @@
+[run]
+source = peodd
+omit =
+    '.venv/*'
