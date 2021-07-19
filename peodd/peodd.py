@@ -17,7 +17,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors:
-#     Venu Vardhan Reddy Tekula <venuvardhanreddytekula8@gmail.com>
+#     Venu Vardhan Reddy Tekula <venu@chaoss.community>
 #
 
 
@@ -66,10 +66,10 @@ def main(output):
         for k, v in poetry_dev_dependencies.items():
             version = re.findall(VERSION_NUMBER_REGEX, v)[0]
             if '^' in v or '>=' in v:
-                fp.write("{}>={}\n".format(k, v.split('^')[-1]))
+                fp.write("{}>={}\n".format(k, version))
                 click.echo("{}>={} ...".format(k, version), nl=False)
             elif v == version:
-                fp.write("{}=={}\n".format(k, v))
+                fp.write("{}=={}\n".format(k, version))
                 click.echo("{}=={} ...".format(k, version), nl=False)
             else:
                 msg = "Please check the version number"
