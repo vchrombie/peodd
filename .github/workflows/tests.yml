@@ -30,7 +30,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd tests
           poetry run coverage run -m pytest
           poetry run coverage report -m
           poetry run coveralls --service=github
