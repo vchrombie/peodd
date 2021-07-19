@@ -1,4 +1,7 @@
-# peodd
+# peodd 
+
+[![PyPI version](https://badge.fury.io/py/peodd.svg)](https://badge.fury.io/py/peodd) 
+[![Coverage Status](https://coveralls.io/repos/github/vchrombie/peodd/badge.svg?branch=master)](https://coveralls.io/github/vchrombie/peodd?branch=master)
 
 poetry export, but only for dev-dependencies
 
