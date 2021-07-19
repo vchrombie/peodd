@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "peodd"
-version = "0.2.0"
+version = "0.2.1"
 description = "Script to export the pyproject.toml dev-dependencies to a txt file."
 authors = [
     "Venu Vardhan Reddy Tekula <venuvardhanreddytekula8@gmail.com>"

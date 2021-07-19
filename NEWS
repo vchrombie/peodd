@@ -1,5 +1,15 @@
 # Releases
 
+## peodd 0.2.1 - (2021-07-19)
+
+**Bug fixes:**
+
+ * Fix bug related to version conditions\
+   The version conditions had a bug which caused errors converting the
+   `bar = ">=1.2.2"` type of dependency. This fixes the bug by using the
+   version instead of v key.
+
+
 ## peodd 0.2.0 - (2021-07-11)
 
 **Performance improvements:**
