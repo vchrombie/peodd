@@ -51,6 +51,12 @@ bar = "+1.2.2"
 baz = "1.2.3"
 """
 
+GIT_URL_DEPENDENCY_CONTENT = """[tool.poetry.dev-dependencies]
+foo = "^1.2.1"
+bar = {git = "https://github.com/foobarbaz/bar.git", rev = "master"}
+baz = "1.2.3"
+"""
+
 DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
     "foo>=1.2.1\nbar>=1.2.2\nbaz==1.2.3\n"
 )
@@ -65,6 +71,10 @@ INVALID_PYPROJECT_TOML_ERROR = (
 
 INVALID_VERSION_NUMBER_ERROR = (
     "Error: Please check the version number"
+)
+
+GIT_URL_DEPENDENCY_SKIPPED_REQUIREMENTS_TXT = (
+    "foo>=1.2.1\nbaz==1.2.3\n"
 )
 
 
@@ -166,6 +176,27 @@ class TestPeodd(unittest.TestCase):
 
             lines = result.stderr.split('\n')
             self.assertEqual(lines[-2], INVALID_VERSION_NUMBER_ERROR.format(fs))
+
+    @unittest.mock.patch('peodd.peodd.Project')
+    def test_git_url_dependency(self, mock_project):
+        """Check if it skips the git url dependecny"""
+
+        runner = click.testing.CliRunner(mix_stderr=False)
+
+        with runner.isolated_filesystem() as fs:
+            project_file = os.path.join(fs, "pyproject.toml")
+            mock_project.return_value.pyproject_file = project_file
+            self.setup_pyproject_file(project_file, GIT_URL_DEPENDENCY_CONTENT)
+
+            # Run the script command
+            result = runner.invoke(peodd.main, ['-o', 'requirements-dev.txt'])
+            self.assertEqual(result.exit_code, 0)
+
+            filepath = os.path.join(fs, 'requirements-dev.txt')
+            with open(filepath, 'r') as fd:
+                text = fd.read()
+
+            self.assertEqual(text, GIT_URL_DEPENDENCY_SKIPPED_REQUIREMENTS_TXT)
 
     def test_version(self):
         self.assertRegex(__version__, peodd.VERSION_NUMBER_REGEX)

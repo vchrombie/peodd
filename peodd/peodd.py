@@ -64,7 +64,12 @@ def main(output):
 
     with open(output, "w") as fp:
         for k, v in poetry_dev_dependencies.items():
-            version = re.findall(VERSION_NUMBER_REGEX, v)[0]
+            try:
+                version = re.findall(VERSION_NUMBER_REGEX, v)[0]
+            except TypeError:
+                msg = "Not a version number, skipping"
+                click.echo(msg)
+                continue
             if '^' in v or '>=' in v:
                 fp.write("{}>={}\n".format(k, version))
                 click.echo("{}>={} ...".format(k, version), nl=False)
