@@ -1,9 +1,0 @@
----
-title: Skip export of git url dependency
-category: fixed
-author: Venu Vardhan Reddy Tekula <venu@chaoss.community>
-issue: null
-notes: >
-    The exporting of git url dependency is not supported
-    yet. This is causing TypeError Exception. This change
-    adds a condition to skip it, avoiding the exception.
