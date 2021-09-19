@@ -1,0 +1,10 @@
+---
+title: Add support for exporting non-dev dependencies
+category: added
+author: Lewi Uberg <lewi@uberg.me>
+issue: null
+notes: >
+  Add possibility to export only non-dev dependencies to a txt file
+  with the `--non-dev` flag, and remove the default filename, forcing
+  the user to provide one with the `-o`, `--output` flag.
+  Usage: ``` $ peodd --non-dev -o requirements.txt ```

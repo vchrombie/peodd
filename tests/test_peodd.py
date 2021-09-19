@@ -18,6 +18,7 @@
 #
 # Authors:
 #     Venu Vardhan Reddy Tekula <venu@chaoss.community>
+#     Lewi Uberg <lewi@uberg.me>
 #
 
 
@@ -26,12 +27,15 @@ import unittest
 import unittest.mock
 
 import click.testing
-
-from peodd._version import __version__
 from peodd import peodd
-
+from peodd._version import __version__
 from release_tools.repo import RepositoryError
 
+NON_DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML = """[tool.poetry.dependencies]
+foo = "^1.2.3"
+bar = ">=1.2.3"
+baz = "1.2.4"
+"""
 
 DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML = """[tool.poetry.dev-dependencies]
 foo = "^1.2.1"
@@ -56,6 +60,10 @@ foo = "^1.2.1"
 bar = {git = "https://github.com/foobarbaz/bar.git", rev = "master"}
 baz = "1.2.3"
 """
+
+NON_DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
+    "foo>=1.2.3\nbar>=1.2.3\nbaz==1.2.4\n"
+)
 
 DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
     "foo>=1.2.1\nbar>=1.2.2\nbaz==1.2.3\n"
@@ -110,6 +118,31 @@ class TestPeodd(unittest.TestCase):
                 text = fd.read()
 
             self.assertEqual(text, DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT)
+
+    @unittest.mock.patch('peodd.peodd.Project')
+    def test_peodd_script_non_dev(self, mock_project):
+        """
+        Check if the main dependencies of the pyproject.toml format are
+        properly converted to the requirements.txt format. Also check if
+        the default output file name is used.
+        """
+
+        runner = click.testing.CliRunner(mix_stderr=False)
+
+        with runner.isolated_filesystem() as fs:
+            project_file = os.path.join(fs, "pyproject.toml")
+            mock_project.return_value.pyproject_file = project_file
+            self.setup_pyproject_file(project_file, NON_DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML)
+
+            # Run the script command
+            result = runner.invoke(peodd.main, ['--non-dev', '-o', 'requirements.txt'])
+            self.assertEqual(result.exit_code, 0)
+
+            filepath = os.path.join(fs, 'requirements.txt')
+            with open(filepath, 'r') as fd:
+                text = fd.read()
+
+            self.assertEqual(text, NON_DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT)
 
     @unittest.mock.patch('peodd.peodd.Project')
     def test_repository_error(self, mock_project):

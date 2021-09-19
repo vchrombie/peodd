@@ -18,6 +18,7 @@
 #
 # Authors:
 #     Venu Vardhan Reddy Tekula <venu@chaoss.community>
+#     Lewi Uberg <lewi@uberg.me>
 #
 
 
@@ -28,20 +29,22 @@ import re
 
 import click
 import tomli
-
 from release_tools.project import Project
-from release_tools.semverup import find_pyproject_file
 from release_tools.repo import RepositoryError
+from release_tools.semverup import find_pyproject_file
 
 VERSION_NUMBER_REGEX = r"\d+(?:\.\d+)+"
 
 
 @click.command()
 @click.option('-o', '--output',
-              default="requirements-dev.txt",
+              help="Output filename for the dependencies")
+@click.option('--non-dev',
+              default=False,
               show_default=True,
-              help="Output file for the dependencies")
-def main(output):
+              is_flag=True,
+              help="Output non-dev dependencies")
+def main(output, non_dev):
     """Script to export the pyproject.toml dev-dependencies to a txt file."""
     try:
         project = Project(os.getcwd())
@@ -58,12 +61,17 @@ def main(output):
             msg = "{} file is not valid".format(pyproject_file)
             raise click.ClickException(msg)
 
-    poetry_dev_dependencies = toml_dict["tool"]["poetry"]["dev-dependencies"]
+    if non_dev:
+        dependencies = toml_dict["tool"]["poetry"]["dependencies"]
+        click.echo("Collected dependencies ...", nl=False)
+    else:
+        dependencies = toml_dict["tool"]["poetry"]["dev-dependencies"]
+        click.echo("Collected dev-dependencies ...", nl=False)
 
-    click.echo("Collected the dev-dependencies")
+    click.echo("done")
 
     with open(output, "w") as fp:
-        for k, v in poetry_dev_dependencies.items():
+        for k, v in dependencies.items():
             try:
                 version = re.findall(VERSION_NUMBER_REGEX, v)[0]
             except TypeError:
