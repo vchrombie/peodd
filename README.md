@@ -71,8 +71,8 @@ Usage: peodd [OPTIONS]
   Script to export the pyproject.toml dev-dependencies to a txt file.
 
 Options:
-  -o, --output TEXT  Output filename for the dependencies
-  --non-dev          Output non-dev dependencies  [default: False]
+  -o, --output TEXT  Output filename for the dependencies  [required]
+  --non-dev          Export non-dev dependencies  [default: False]
   --help             Show this message and exit.
 ```
 

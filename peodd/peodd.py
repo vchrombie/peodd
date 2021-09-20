@@ -38,12 +38,13 @@ VERSION_NUMBER_REGEX = r"\d+(?:\.\d+)+"
 
 @click.command()
 @click.option('-o', '--output',
+              required=True,
               help="Output filename for the dependencies")
 @click.option('--non-dev',
               default=False,
               show_default=True,
               is_flag=True,
-              help="Output non-dev dependencies")
+              help="Export non-dev dependencies")
 def main(output, non_dev):
     """Script to export the pyproject.toml dev-dependencies to a txt file."""
     try:
