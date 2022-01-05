@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2021 CHAOSS
+# Copyright (C) 2022 CHAOSS
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -89,13 +89,16 @@ def main(output, non_dev):
 
     with open(output, "w") as fp:
         for k, v in dependencies.items():
-            try:
-                write_package_version_to_file(fp, k, v)
-            except TypeError:
-                msg = "Format not supported"
-                # You can open an issue at https://github.com/vchrombie/peodd
-                # for reporting this and more discussion
-                raise click.ClickException(msg)
+            if type(v) is dict:
+                try:
+                    v = v['version']
+                except KeyError:
+                    msg = "Format not supported"
+                    # You can open an issue at https://github.com/vchrombie/peodd
+                    # for reporting this and more discussion
+                    raise click.ClickException(msg)
+
+            write_package_version_to_file(fp, k, v)
 
     click.echo("Export complete")
 

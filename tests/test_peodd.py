@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2021 CHAOSS
+# Copyright (C) 2022 CHAOSS
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,11 +35,13 @@ DEPENDENCIES_CONTENT_PYPROJECT_TOML = """
 [tool.poetry.dependencies]
 foo1 = "^1.2.3"
 bar1 = ">=1.2.3"
+bas1 = {extras = ["bar1"], version = "^1.2.3"}
 baz1 = "1.2.3"
 
 [tool.poetry.dev-dependencies]
 foo2 = "^1.2.3"
 bar2 = ">=1.2.3"
+bas2 = {extras = ["bar2"], version = "^1.2.3"}
 baz2 = "1.2.3"
 """
 
@@ -65,11 +67,11 @@ baz = "1.2.3"
 """
 
 NON_DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
-    "foo1>=1.2.3\nbar1>=1.2.3\nbaz1==1.2.3\n"
+    "foo1>=1.2.3\nbar1>=1.2.3\nbas1>=1.2.3\nbaz1==1.2.3\n"
 )
 
 DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
-    "foo2>=1.2.3\nbar2>=1.2.3\nbaz2==1.2.3\n"
+    "foo2>=1.2.3\nbar2>=1.2.3\nbas2>=1.2.3\nbaz2==1.2.3\n"
 )
 
 MOCK_REPOSITORY_ERROR = (
