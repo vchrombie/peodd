@@ -36,6 +36,22 @@ from release_tools.semverup import find_pyproject_file
 VERSION_NUMBER_REGEX = r"\d+(?:\.\d+)+"
 
 
+def write_package_version_to_file(fp, k, v):
+    version = re.findall(VERSION_NUMBER_REGEX, v)[0]
+
+    if '^' in v or '>=' in v:
+        fp.write("{}>={}\n".format(k, version))
+        click.echo("{}>={} ...".format(k, version), nl=False)
+    elif v == version:
+        fp.write("{}=={}\n".format(k, version))
+        click.echo("{}=={} ...".format(k, version), nl=False)
+    else:
+        msg = "Wrong version number"
+        raise click.ClickException(msg)
+
+    click.echo("done")
+
+
 @click.command()
 @click.option('-o', '--output',
               required=True,
@@ -74,21 +90,12 @@ def main(output, non_dev):
     with open(output, "w") as fp:
         for k, v in dependencies.items():
             try:
-                version = re.findall(VERSION_NUMBER_REGEX, v)[0]
+                write_package_version_to_file(fp, k, v)
             except TypeError:
-                msg = "Not a version number, skipping"
-                click.echo(msg)
-                continue
-            if '^' in v or '>=' in v:
-                fp.write("{}>={}\n".format(k, version))
-                click.echo("{}>={} ...".format(k, version), nl=False)
-            elif v == version:
-                fp.write("{}=={}\n".format(k, version))
-                click.echo("{}=={} ...".format(k, version), nl=False)
-            else:
-                msg = "Please check the version number"
+                msg = "Format not supported"
+                # You can open an issue at https://github.com/vchrombie/peodd
+                # for reporting this and more discussion
                 raise click.ClickException(msg)
-            click.echo("done")
 
     click.echo("Export complete")
 

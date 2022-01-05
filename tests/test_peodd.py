@@ -78,11 +78,11 @@ INVALID_PYPROJECT_TOML_ERROR = (
 )
 
 INVALID_VERSION_NUMBER_ERROR = (
-    "Error: Please check the version number"
+    "Error: Wrong version number"
 )
 
-GIT_URL_DEPENDENCY_SKIPPED_REQUIREMENTS_TXT = (
-    "foo>=1.2.1\nbaz==1.2.3\n"
+INVALID_DEPENDENCY_FORMAT_ERROR = (
+    "Error: Format not supported"
 )
 
 
@@ -223,13 +223,12 @@ class TestPeodd(unittest.TestCase):
 
             # Run the script command
             result = runner.invoke(peodd.main, ['-o', 'requirements-dev.txt'])
-            self.assertEqual(result.exit_code, 0)
+            self.assertEqual(result.exit_code, 1)
 
-            filepath = os.path.join(fs, 'requirements-dev.txt')
-            with open(filepath, 'r') as fd:
-                text = fd.read()
+            self.assertRaises(Exception)
 
-            self.assertEqual(text, GIT_URL_DEPENDENCY_SKIPPED_REQUIREMENTS_TXT)
+            lines = result.stderr.split('\n')
+            self.assertEqual(lines[-2], INVALID_DEPENDENCY_FORMAT_ERROR.format(fs))
 
     def test_version(self):
         self.assertRegex(__version__, peodd.VERSION_NUMBER_REGEX)
