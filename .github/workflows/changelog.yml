@@ -1,12 +1,12 @@
-name: check-changelog
+name: changelog
 
 on:
   pull_request:
     paths:
-      - 'peodd/'
+      - 'peodd/**'
 
 jobs:
-  check-changelog:
+  changelog:
     runs-on: ubuntu-latest
     steps:
       - uses: bitergia/release-tools-check-changelog@master
