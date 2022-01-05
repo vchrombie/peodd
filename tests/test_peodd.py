@@ -31,42 +31,45 @@ from peodd import peodd
 from peodd._version import __version__
 from release_tools.repo import RepositoryError
 
-NON_DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML = """[tool.poetry.dependencies]
-foo = "^1.2.3"
-bar = ">=1.2.3"
-baz = "1.2.4"
+DEPENDENCIES_CONTENT_PYPROJECT_TOML = """
+[tool.poetry.dependencies]
+foo1 = "^1.2.3"
+bar1 = ">=1.2.3"
+baz1 = "1.2.3"
+
+[tool.poetry.dev-dependencies]
+foo2 = "^1.2.3"
+bar2 = ">=1.2.3"
+baz2 = "1.2.3"
 """
 
-DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML = """[tool.poetry.dev-dependencies]
+INVALID_CONTENT_PYPROJECT_TOML = """
+[tool.poetry.dev-dependencies
 foo = "^1.2.1"
 bar = ">=1.2.2"
 baz = "1.2.3"
 """
 
-INVALID_CONTENT_PYPROJECT_TOML = """[tool.poetry.dev-dependencies
-foo = "^1.2.1"
-bar = ">=1.2.2"
-baz = "1.2.3"
-"""
-
-INVALID_VERSION_NUMBER_CONTENT = """[tool.poetry.dev-dependencies]
+INVALID_VERSION_NUMBER_CONTENT = """
+[tool.poetry.dev-dependencies]
 foo = "^1.2.1"
 bar = "+1.2.2"
 baz = "1.2.3"
 """
 
-GIT_URL_DEPENDENCY_CONTENT = """[tool.poetry.dev-dependencies]
+GIT_URL_DEPENDENCY_CONTENT = """
+[tool.poetry.dev-dependencies]
 foo = "^1.2.1"
 bar = {git = "https://github.com/foobarbaz/bar.git", rev = "master"}
 baz = "1.2.3"
 """
 
 NON_DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
-    "foo>=1.2.3\nbar>=1.2.3\nbaz==1.2.4\n"
+    "foo1>=1.2.3\nbar1>=1.2.3\nbaz1==1.2.3\n"
 )
 
 DEV_DEPENDENCIES_CONTENT_REQUIREMENTS_TXT = (
-    "foo>=1.2.1\nbar>=1.2.2\nbaz==1.2.3\n"
+    "foo2>=1.2.3\nbar2>=1.2.3\nbaz2==1.2.3\n"
 )
 
 MOCK_REPOSITORY_ERROR = (
@@ -107,7 +110,7 @@ class TestPeodd(unittest.TestCase):
         with runner.isolated_filesystem() as fs:
             project_file = os.path.join(fs, "pyproject.toml")
             mock_project.return_value.pyproject_file = project_file
-            self.setup_pyproject_file(project_file, DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML)
+            self.setup_pyproject_file(project_file, DEPENDENCIES_CONTENT_PYPROJECT_TOML)
 
             # Run the script command
             result = runner.invoke(peodd.main, ['-o', 'requirements-dev.txt'])
@@ -132,7 +135,7 @@ class TestPeodd(unittest.TestCase):
         with runner.isolated_filesystem() as fs:
             project_file = os.path.join(fs, "pyproject.toml")
             mock_project.return_value.pyproject_file = project_file
-            self.setup_pyproject_file(project_file, NON_DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML)
+            self.setup_pyproject_file(project_file, DEPENDENCIES_CONTENT_PYPROJECT_TOML)
 
             # Run the script command
             result = runner.invoke(peodd.main, ['--non-dev', '-o', 'requirements.txt'])
@@ -154,7 +157,7 @@ class TestPeodd(unittest.TestCase):
 
             project_file = os.path.join(fs, "pyproject.toml")
             mock_project.return_value.pyproject_file = project_file
-            self.setup_pyproject_file(project_file, DEV_DEPENDENCIES_CONTENT_PYPROJECT_TOML)
+            self.setup_pyproject_file(project_file, DEPENDENCIES_CONTENT_PYPROJECT_TOML)
 
             mock_project.side_effect = RepositoryError()
 
