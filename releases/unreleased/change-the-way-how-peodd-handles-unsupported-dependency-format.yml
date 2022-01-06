@@ -1,9 +1,0 @@
----
-title: Change the way how peodd handles unsupported dependency format
-category: changed
-author: Venu Vardhan Reddy Tekula <venu@chaoss.community>
-issue: null
-notes: >
-    Earlier, peodd used to skip any dependency if it is not supported.
-    This is changed and now it raises an exception saying the format
-    is not supported and stops the program.
