@@ -2,6 +2,7 @@
 [![tests](https://github.com/vchrombie/peodd/actions/workflows/tests.yml/badge.svg)](https://github.com/vchrombie/peodd/actions/workflows/tests.yml) 
 [![Coverage Status](https://coveralls.io/repos/github/vchrombie/peodd/badge.svg?branch=master)](https://coveralls.io/github/vchrombie/peodd?branch=master) 
 [![PyPI version](https://badge.fury.io/py/peodd.svg)](https://badge.fury.io/py/peodd)
+[![Downloads](https://pepy.tech/badge/peodd)](https://pepy.tech/project/peodd)
 
 poetry export, but only for dev-dependencies
 
